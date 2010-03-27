@@ -48,7 +48,7 @@ page is backlinking and if the source and target are valid URLs and so forth.
 
 The solution resulted one regular and one static class: PingbackServer and PingbackUtility. 
 PingbackUtility contains a few static methods to aid the user and the server 
-(See the usage section). PingbackUtility includes the client. `PingbackServer` 
+(See the usage section). PingbackUtility includes the client. PingbackServer
 is an instantiable class with a set of methods and constants for 
 implementing a specification compliant pingback server.
 
