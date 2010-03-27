@@ -46,8 +46,8 @@ consideration. No generalized library like the one I wrote can for example know 
 or not a pingback has already been registered or not. But it can easily find out if a 
 page is backlinking and if the source and target are valid URLs and so forth.
 
-The solution resulted one regular and one static class: `PingbackServer` and `PingbackUtility`. 
-`PingbackUtility` contains a few static methods to aid the user and the server 
+The solution resulted one regular and one static class: PingbackServer and PingbackUtility. 
+PingbackUtility contains a few static methods to aid the user and the server 
 (See the usage section). PingbackUtility includes the client. `PingbackServer` 
 is an instantiable class with a set of methods and constants for 
 implementing a specification compliant pingback server.
