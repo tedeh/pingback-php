@@ -103,7 +103,7 @@ class PingbackServer
   
   public function hasFault($fault)
   {
-    return $fault === $this->fault ? true : false;
+    return $fault === $this->fault;
   }
   
   public function setFault($fault)
