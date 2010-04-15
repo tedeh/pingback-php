@@ -36,23 +36,13 @@ class PingbackServer
   {
     list($this->sourceURL, $this->targetURL) = $parameters;
     
-    if(PingbackUtility::isURL($this->sourceURL)) 
-    {
-      if(PingbackUtility::isURL($this->targetURL)) 
-      {
-        if(PingbackUtility::isPingbackEnabled($this->targetURL)) 
-        {
-          if(PingbackUtility::isBacklinking($this->sourceURL, $this->targetURL))
-          {
-            return $this->setSuccess();
-          }
-          else return $this->setFault(self::$FAULT_SOURCE_LINK);
-        }
-        else return $this->setFault(self::$FAULT_TARGET_INVALID);
-      }
-      else return $this->setFault(self::$FAULT_TARGET);
-    }
-    else return $this->setFault(self::$FAULT_SOURCE);
+    if(!PingbackUtility::isURL($this->sourceURL)) return $this->setFault(self::$FAULT_SOURCE);
+    if(!PingbackUtility::isURL($this->targetURL)) return $this->setFault(self::$FAULT_TARGET);
+    if(!PingbackUtility::isPingbackEnabled($this->targetURL)) return $this->setFault(self::$FAULT_TARGET_INVALID);
+    if(!PingbackUtility::isBacklinking($this->sourceURL, $this->targetURL)) return $this->setFault(self::$FAULT_SOURCE_LINK);
+    
+    // if no error occured, all went well.
+    return $this->setSuccess();
   }
   
   public function execute()
