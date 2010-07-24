@@ -58,9 +58,9 @@ class Pingback_Utility
     return preg_match(self::REGEXP_PINGBACK_LINK, $response, $match) ? $match[1] : false;
   }
 
-  public static function isBacklinking($url, $to)
+  public static function isBacklinking($from, $to)
   {
-    $content = file_get_contents($url);
+    $content = file_get_contents($from);
     if($content !== false)
     {
       $doc = new DOMDocument();
