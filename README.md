@@ -48,131 +48,193 @@ Pingback_Utility contains the following static methods.
 
 ### Pingback_Utility::isURL()
 
-* `@param    $url`      The URL
-* `@return   boolean`   Wheter the URL is valid
+* `@param string $url`      The URL
+* `@return boolean`         Wheter the URL is valid
 
 Returns a boolean value determining wheter the first argument is a valid URL or not.
 
 ### Pingback_Utility::isPingbackEnabled()
 
-* `@param    $url`      The URL
-* `@return   boolean`   Wheter the URL is pingback enabled
+* `@param string $url`      The URL
+* `@return boolean`         Wheter the URL is pingback enabled
 
 Returns a boolean value determining wheter the first argument supports the reception
 of pingbacks.
 
 ### Pingback_Utility::getRawPostData()
 
-* `@return  string`  The raw POST data
+* `@return string`  The raw POST data
 
 Reads the raw, unfiltered POST data and returns it
 
-### Pingback_Utility::getPingbackURL() (bool)
+### Pingback_Utility::getPingbackURL()
 
-* `@param    @url`    The URL  
-* `@return   string`  The server address if found
+* `@param string @url`    The URL  
+* `@return string`        The server address if found
 
 Extracts the pingback URL from the first argument.
 
 ### PingbackUtility::isBacklinking()
 
-* `@param  $from`     The URL of the page
-* `@param  $to`       The URL that should exist in atleast one link
-* `@return boolean`   Wheter there is a link or not
+* `@param string $from`     The URL of the page
+* `@param string $to`       The URL that should exist in atleast one link
+* `@return boolean`         Wheter there is a link or not
 
 Determines wheter the first argument is linking to the second.
 
-### PingbackUtility::sendPingback
+### PingbackUtility::sendPingback()
 
-* `@param  $from`    The originator of the pingback
-* `@param  $to`      The target of the pingback
-* `@param  $server`  The URL of the server
-* `@return string`   The raw response from the server
+* `@param string $from`    The originator of the pingback
+* `@param string $to`      The target of the pingback
+* `@param string $server`  The URL of the server
+* `@return string`         The raw response from the server
 
 The client implementation. Takes three arguments. The first one is the source URL
 (originator) of the pingback request, the second one is the target url, 
 and the third one is the url to the pingback server. Returns the raw server 
 response, which is easily parsed with `xmlrpc_decode_request()`.
 
-PingbackServer
+Pingback_Server
 -----------------------------------
 
-PingbackServer is an instantiable class representing a pingback server resource.
+PingbackServer is an instantiable class representing a pingback server resource. The majority
+of requirements put upon a valid pingback request are automatically evaluated. However, two
+specific requirements have to be evaluated by additional, user-provided logic. These corresponding
+faults of these two requirements are:
 
-PingbackServer::__construct($request = null) (PingbackServer)
-The constructor method takes one optional argument: a raw 
-pingback xml-rpc request. If not set, the constructor will attempt to
-infer it.
+* __Pingback_Server::RESPONSE_FAULT_ALREADY_REGISTERED__ the pingback has already been registered
+* __Pingback_Server::RESPONSE_FAULT_ACCESS_DENIED__ access to the server resource has been denied
 
-PingbackServer::execute() (bool)
-Executes the server cycle with the bound pingback request. 
-Returns a boolean value on wheter or not the request is valid (succeded).
-After running this method (and passing it), you should typically 
-determine wheter or not the pingback has been registered, or if any 
-other considerations that this server object is unable to evaluate. 
-See the section on responses.
+After execution of the bound request, the implementor may leverage `Pingback_Server->setFault()` to
+ensure a proper response if all requirements of the request have not been met.
 
-PingbackServer::setResponse($response)
-Sets the server response. Takes one array argument that will be encoded into an XML-RPC response. 
-See section on responses.
+### Pingback_Server->__construct()
 
-PingbackServer::setRequest($request)
-Sets the server request. Takes one array argument that will be encoded into an XML-RPC request.
+* `@param array $options` Array of options
 
-PingbackServer::getRequest() (array)
-Returns the request, as an array.
+Takes an array of options that will be automatically set. Creates the server instance and
+enabled the pingback method on it.
 
-PingbackServer::getResponse() (array)
-Returns the response, as an array.
+### Pingback_Server->getOption()
 
-PingbackServer::getSourceURL() (string)
-Returns the source url.
+* `@param string $option`   Option to return
+* `@return mixed`           The value or null if not exist
 
-PingbackServer::getTargetURL() (string)
-Returns the target url.
+Returns an option.
 
-PingbackServer::getFaultCode() (integer)
-Returns the XML-RPC fault code as an integer. If one exists, else null.
+### Pingback_Server->setOption()
 
-PingbackServer::getFaultString() (string)
-Returns a string description of the fault, if one exists, else null.
+* `@param string $option`   Name of option
+* `@param mixed $value`     Value to set
 
-PingbackServer::hasFault($fault) (bool)
-Determines wheter or not the request has the specified fault. Takes one array argument. See section on responses.
+Takes an array of options.
 
-PingbackServer::setFault($fault)
-Sets the fault to the single array argument. See section on responses.
-Returns the passed fault array.
+### Pingback_Server->setOptions()
 
-PingbackServer::setSuccess($success = array())
-Sets the request to be successful. Takes one optional array 
-argument, that can include things you want to pass along to the 
-client. See the section on responses. Returns the passed array,
-or the default success response.
+* `@param array $options` Array of options
 
-PingbackServer::isValid() (bool)
-Determines wheter or not the request is valid (does not have a fault). 
-Boolean return value.
+Takes an array of options.
+
+### Pingback_Server->execute()
+
+* `@param string $request`  Evaluate this request
+
+Evaluates the given request. If no argument is given, evaluates
+the set request.
+
+### Pingback_Server->setResponse()
+
+* `@param string $response` The response
+
+Sets the response as a string.
+
+### Pingback_Server->setRequest()
+
+* `@param string $request` The request
+
+Sets the request as a string.
+
+### Pingback_Server->getRequest()
+
+* `@return string` The request
+
+Returns the request.
+
+### Pingback_Server->getResponse()
+
+* `@return string` The response
+
+Returns the response.
+
+### Pingback_Server->getSourceURL()
+
+* `@return string` The source URL
+
+Returns the source URL from the request.
+
+### Pingback_Server->getTargetURL()
+
+* `@return string` The target URL
+
+Returns the target URL from the request.
+
+### Pingback_Server->getTargetURL()
+
+* `@return boolean` The target URL
+
+Returns the target URL from the request.
+
+### Pingback_Server->getFaultAsArray()
+
+* `@param integer $faultCode`   The fault code
+* `@return array`               The fault (code and string) formatted as an array
+
+Returns the passed fault code as an array fit for the response.
+
+### Pingback_Server->setFault()
+
+* `@param integer $faultCode` The fault code to set
+
+Sets the fault code of the request.
+
+### Pingback_Server->getSuccessAsArray()
+
+* `@return array` The success array
+
+Returns the success response as an array fit for the response.
+
+### Pingback_Server->setSuccess()
+
+Marks the current request as successful.
+
+### Pingback_Server->isValid()
+
+* `@return boolean` The request validity
+
+Returns wheter or not the current request is considered valid.  
+
+#### Available options
+
+The methods for setting options supports the following option names and values:
+
+* `string 'encoding'` encoding used by the server
 
 Responses
 -----------------------------------
 
-PingbackServer has a set of public static responses that are used together 
-with the methods setResponse(), hasFault(), setFault() and setSuccess().
-These static constants correspond to different fault codes defined in the 
-pingback specification. These are:
+Pingback_Server has a set of class constants that may be used with the
+appropriate methods on a server instance. The actual messages returned by the server
+can be manipulated by changing the strings in the `Pingback_Server->responses` array (where
+the array keys correspond to the class constants).
 
-- PingbackServer::$FAULT_GENERIC (Unknown error)
-- PingbackServer::$FAULT_SOURCE (Source link invalid)
-- PingbackServer::$FAULT_SOURCE_LINK (Source is not backlinking to target)
-- PingbackServer::$FAULT_TARGET (Target link invalid)
-- PingbackServer::$FAULT_TARGET_INVALID (Target is not pingback enabled)
-- PingbackServer::$FAULT_ALREADY_REGISTERED (Pingback already registered)
-- PingbackServer::$FAULT_ACCESS_DENIED (Access denied)
-- PingbackServer::$SUCCESS (Simple array used to indicate success)
-
-The ones you usually need to worry about are $FAULT_ALREADY_REGISTERED and $FAULT_ACCESS_DENIED
-which you have to evaluate yourself, after execution. Just pass these along to the setFault() method.
+- __Pingback_Server::RESPONSE_FAULT_GENERIC__ Unknown error
+- __Pingback_Server::RESPONSE_FAULT_SOURCE__ Source link invalid
+- __Pingback_Server::RESPONSE_FAULT_SOURCE_LINK__ Source is not backlinking to target
+- __Pingback_Server::RESPONSE_FAULT_TARGET__ Target link invalid
+- __Pingback_Server::RESPONSE_FAULT_TARGET_INVALID__ Target is not pingback enabled
+- __Pingback_Server::RESPONSE_FAULT_ALREADY_REGISTERED__ Pingback already registered
+- __Pingback_Server::RESPONSE_FAULT_ACCESS_DENIED__ Access denied
+- __Pingback_Server::RESPONSE_SUCCESS__ Indicates success
 
 
 

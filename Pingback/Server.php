@@ -140,11 +140,6 @@ class Pingback_Server
   {
     return $this->_targetURL;
   }
-
-  public function hasFault($fault)
-  {
-    return $fault === $this->fault;
-  }
   
   public function getFaultAsArray($faultCode)
   {
