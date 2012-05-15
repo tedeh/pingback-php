@@ -1,16 +1,12 @@
 {
-	"name": "tedeh/pingback-php",
+	"name": "tedeh/pingback",
 	"type": "library",
 	"description": "Pingback client and server implementation",
 	"keywords": ["pingback"],
 	"homepage": "https://github.com/tedeh/pingback-php",
 	"license": "MIT",
 	"authors": [
-		{
-			"name": "Tedde Lundgren",
-			"email": "mail@tedeh.net",
-			"homepage": "http://tedeh.net",
-			"role": "Developer"
+		{ "name": "Tedde Lundgren", "email": "mail@tedeh.net", "homepage": "http://tedeh.net", "role": "Developer" }
 	],
 	"require": {
 		"php": ">=5.0.0"
