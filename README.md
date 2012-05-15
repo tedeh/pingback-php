@@ -1,10 +1,7 @@
 Pingback implementation for PHP
 ===================================
 
-Created and copyrighted by Tedde Lundgren. Licensed under 
-[Attribution-ShareAlike 3.0 Unported][license].
-
-[license]: http://creativecommons.org/licenses/by-sa/3.0/
+Created and copyrighted by [Tedde Lundgren](mailto:mail@tedeh.net) and licensed under MIT.
 
 Introduction
 -----------------------------------
@@ -235,13 +232,3 @@ the array keys correspond to the class constants).
 - __Pingback_Server::RESPONSE_FAULT_ALREADY_REGISTERED__ Pingback already registered
 - __Pingback_Server::RESPONSE_FAULT_ACCESS_DENIED__ Access denied
 - __Pingback_Server::RESPONSE_SUCCESS__ Indicates success
-
-
-
-
-
-
-
-
-
-
