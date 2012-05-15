@@ -4,7 +4,7 @@
 	"description": "Pingback client and server implementation",
 	"keywords": ["pingback"],
 	"homepage": "https://github.com/tedeh/pingback-php",
-	"license": "CC Attribution-ShareAlike 3.0 Unported",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Tedde Lundgren",
