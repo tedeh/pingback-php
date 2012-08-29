@@ -11,9 +11,8 @@
 	"require": {
 		"php": ">=5.0.0"
 	},
-  "autoload": {
-    "psr-0": {
-        "Pingback": "lib"
-    }
-  }
+	"autoload": {
+		"classmap": ["lib/Pingback/Exception.php", "lib/Pingback/Server.php", "lib/Pingback/Utility.php"]
+	}
+
 }
