@@ -63,7 +63,7 @@ class Pingback_Server {
     if(!$fault && !Pingback_Utility::isURL($this->_requestTarget)) $fault = self::RESPONSE_FAULT_TARGET;
 
     // is the target url pingback enabled?
-    if(!$fault && Pingback_Utility::isPingbackEnabled($this->_requestTarget)) $fault = self::RESPONSE_FAULT_TARGET_INVALID;
+    if(!$fault && !Pingback_Utility::isPingbackEnabled($this->_requestTarget)) $fault = self::RESPONSE_FAULT_TARGET_INVALID;
 
     // is the source backlinking to the target?
     if(!$fault && !Pingback_Utility::isBacklinking($this->_requestSource, $this->_requestTarget)) $fault = self::RESPONSE_FAULT_SOURCE_LINK;
