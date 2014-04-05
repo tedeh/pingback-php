@@ -57,16 +57,16 @@ class Pingback_Server {
     $fault = null;
 
     // is the source argument really an url?
-    if(!$fault && Pingback_Utility::isURL($this->_requestSource)) $fault = self::RESPONSE_FAULT_SOURCE;
+    if(!$fault && !Pingback_Utility::isURL($this->_requestSource)) $fault = self::RESPONSE_FAULT_SOURCE;
 
     // is the target argument really an url?
-    if(!$fault && Pingback_Utility::isURL($this->_requestTarget)) $fault = self::RESPONSE_FAULT_TARGET;
+    if(!$fault && !Pingback_Utility::isURL($this->_requestTarget)) $fault = self::RESPONSE_FAULT_TARGET;
 
     // is the target url pingback enabled?
     if(!$fault && Pingback_Utility::isPingbackEnabled($this->_requestTarget)) $fault = self::RESPONSE_FAULT_TARGET_INVALID;
 
     // is the source backlinking to the target?
-    if(!$fault && Pingback_Utility::isBacklinking($this->_requestSource, $this->_requestTarget)) $fault = self::RESPONSE_FAULT_SOURCE_LINK;
+    if(!$fault && !Pingback_Utility::isBacklinking($this->_requestSource, $this->_requestTarget)) $fault = self::RESPONSE_FAULT_SOURCE_LINK;
     
     if($fault !== null) {
       $this->setFault($fault);
@@ -116,11 +116,11 @@ class Pingback_Server {
   }
 
   public function getSourceURL() {
-    return $this->_sourceURL;
+    return $this->_requestSource;
   }
 
   public function getTargetURL() {
-    return $this->_targetURL;
+    return $this->_requestTarget;
   }
   
   public function getFaultAsArray($faultCode) {
